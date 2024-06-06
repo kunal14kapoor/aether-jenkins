@@ -2,7 +2,7 @@ def repo = 'https://github.com/kunal14kapoor/aether-jenkins.git'
 def branch = 'main'
 
 // URL to the pipelines directory
-def pipelinesUrl = "${WORKSPCE}/jjb/pipeline/"
+def pipelinesUrl = "${repo}/jjb/pipeline?ref=${branch}"
 
 // Get list of pipeline scripts from the GitHub API
 def pipelines = new groovy.json.JsonSlurper().parse(new URL(pipelinesUrl).newReader())
