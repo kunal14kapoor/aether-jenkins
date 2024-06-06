@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: LicenseRef-ONF-Member-Only-1.0
 pipelineJob('onramp_deployment'){
 
-	Definition{
+	definition(groovy.lang.Closure){
 
 		agent {
 		        label 'Mumbai-A1'
