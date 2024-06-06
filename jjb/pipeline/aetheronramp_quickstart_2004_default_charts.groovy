@@ -2,10 +2,6 @@
 // SPDX-License-Identifier: LicenseRef-ONF-Member-Only-1.0
 pipelineJob('onramp_deployment'){
 
-	definition{
-
-	  cps{
-
 		agent {
 		        label 'Mumbai-A1'
     		}
@@ -143,7 +139,4 @@ pipelineJob('onramp_deployment'){
     		}
          
 	}
-
-	}
-
 }
