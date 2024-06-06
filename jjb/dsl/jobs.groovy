@@ -1,17 +1,18 @@
-def repo = 'https://github.com/kunal14kapoor/aether-jenkins.git'
-def branch = 'main'
+import groovy.io.FileType
 
-// URL to the pipelines directory
-def pipelinesUrl = "${WORKSPACE}/jjb/pipeline/"
+// Path to the directory containing pipeline scripts, using $WORKSPACE
+def scriptsDirectory = new File("${WORKSPACE}/jjb/pipeline")
 
-// Get list of pipeline scripts from the GitHub API
-def pipelines = new groovy.json.JsonSlurper().parse(new URL(pipelinesUrl).newReader())
+// Ensure the directory exists
+if (!scriptsDirectory.exists()) {
+    throw new RuntimeException("Directory ${scriptsDirectory} does not exist")
+}
 
-pipelines.each { file ->
+// Iterate over each Groovy file in the directory
+scriptsDirectory.eachFileRecurse(FileType.FILES) { file ->
     if (file.name.endsWith('.groovy')) {
         def jobName = file.name.replace('.groovy', '')
-        def scriptUrl = file.download_url
-        def pipelineScript = new URL(scriptUrl).text
+        def pipelineScript = file.text
 
         pipelineJob(jobName) {
             definition {
