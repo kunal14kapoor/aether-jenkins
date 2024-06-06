@@ -1,6 +1,6 @@
 // SPDX-FileCopyrightText: 2021 Open Networking Foundation <info@opennetworking.org>
 // SPDX-License-Identifier: LicenseRef-ONF-Member-Only-1.0
-pipelineJob(onramp_deployment){
+pipelineJob('onramp_deployment'){
 
 	Definition{
 
