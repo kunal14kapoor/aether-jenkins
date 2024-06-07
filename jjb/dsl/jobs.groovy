@@ -1,46 +1,26 @@
-import groovy.yaml.YamlSlurper
+import groovy.io.FileType
 
-// Function to create pipeline job from YAML configuration
-def createPipelineJobFromYaml(yamlFilePath) {
-    def config = new YamlSlurper().parse(new File(yamlFilePath))
-    def pipelineFile = config['pipeline-script']
-    def description = config['description']
-    def trigger = config['triggers']
-    def jobName = config['name'] ?: getJobNameFromFilename(pipelineFile)
-    
-    def pipelineScript = readFileFromWorkspace(pipelineFile)
-    
-    pipelineJob(jobName) {
-        description(description) // Set description for the job
-        triggers {
-            cron(trigger) // Set trigger for the job
-        }
-        definition {
-            cps {
-                script(pipelineScript)
+// Path to the directory containing pipeline scripts, using $WORKSPACE
+def scriptsDirectory = new File("${WORKSPACE}/pipelines")
+
+// Ensure the directory exists
+if (!scriptsDirectory.exists()) {
+    throw new RuntimeException("Directory ${scriptsDirectory} does not exist")
+}
+
+// Iterate over each Groovy file in the directory
+scriptsDirectory.eachFileRecurse(FileType.FILES) { file ->
+    if (file.name.endsWith('.groovy')) {
+        def jobName = file.name.replace('.groovy', '')
+        def pipelineScript = file.text
+
+        pipelineJob(jobName) {
+            definition {
+                cps {
+                    script(pipelineScript)
+                    sandbox() // Optional: run in a secure sandbox
+                }
             }
         }
     }
 }
-
-// Function to get job name from filename
-def getJobNameFromFilename(filename) {
-    return filename.take(filename.lastIndexOf('.'))
-}
-
-// Function to read file content from workspace
-def readFileFromWorkspace(filePath) {
-    def fileContent = readFile(filePath)
-    return fileContent
-}
-
-// Directory containing YAML files for pipeline configurations
-def yamlFilesDir = 'jjb/template/'
-
-// Read pipeline configurations from YAML files
-def yamlFiles = new File(yamlFilesDir).listFiles().findAll { it.name.endsWith('.yaml') }
-
-yamlFiles.each { yamlFile ->
-    createPipelineJobFromYaml(yamlFile)
-}
-
