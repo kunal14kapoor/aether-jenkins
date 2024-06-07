@@ -1,7 +1,7 @@
 import groovy.io.FileType
 
 // Path to the directory containing pipeline scripts, using $WORKSPACE
-def scriptsDirectory = new File("${WORKSPACE}/pipelines")
+def scriptsDirectory = new File("${WORKSPACE}/jjb/pipeline")
 
 // Ensure the directory exists
 if (!scriptsDirectory.exists()) {
