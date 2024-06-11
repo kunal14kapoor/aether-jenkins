@@ -15,4 +15,4 @@
             H 0 * * *
 
 
-      dsl: !include-raw: /home/ubuntu/aether-jenkins/jjb/pipeline/aetheronramp-quickstart-2004-default-charts.groovy
+      dsl: !include-raw: aetheronramp-quickstart-2004-default-charts.groovy
