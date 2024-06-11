@@ -1,3 +1,0 @@
-invalid_include_path_type.yaml:5:11: Expected either a sequence or scalar node, but found mapping
-              !include:
-              ^
