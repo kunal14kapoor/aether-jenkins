@@ -1,3 +1,0 @@
-topmost_list_item_not_a_dict.yaml:2:3: Topmost list should contain single-item dict, not a <class 'str'>. Missing indent?
-    - some_string
-      ^
